@@ -3,5 +3,7 @@
     "source.fixAll": "explicit",
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
-  }
+  },
+  "totvsLanguageServer.welcomePage": false,
+  "totvsLanguageServer.editor.linter.includes": "C:\\Users\\Usuário\\Documents\\Vscode_cooamat\\includes"
 }

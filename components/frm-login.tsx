@@ -3,67 +3,44 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    View
+    View,
 } from 'react-native';
 
-import { supabase } from '@/lib/supabase';
 import { useState } from 'react';
-
 //npm install react-native-toast-message
+import { supabase } from '@/lib/supabase';
 import Toast from 'react-native-toast-message';
-export default function Login() {
-    // const [usuario, setUsuario] = useState('');
-    // const [senha, setSenha] = useState('');
 
-    // function validarLogin(){
-    //     if(usuario === 'admin'){
-    //         Toast.show({
-    //             type:'success',
-    //             text1: 'Sucesso',
-    //             text2: 'Login efetuado com sucesso'
-    //         })
-    //     }else{
-    //          Toast.show({
-    //             type:'error',
-    //             text1: 'Erro!',
-    //             text2: 'Usuário ou Senha inválidos'
-    //         })
-    //         //subir para o git
-    //     }
-    // }
+import { router } from 'expo-router'; //captura de rota
+
+export default function Login() {
 
     const [usuario, setUsuario] = useState('')
     const [senha, setSenha] = useState('')
+    
     const [loading, setLoading] = useState(false)
-    async function signInWithUsuario() {
+
+    async function validarLogin() {
+
         setLoading(true)
+
         const { error } = await supabase.auth.signInWithPassword({
             email: usuario,
             password: senha,
         })
-        //if (error) Alert.alert(error.message)
-        if (error) {
+
+        if(error){
             Toast.show({
                 type: 'error',
                 text1: 'Erro!',
-                text2: 'Usuário ou Senha inválidos'
+                text2: error.message
             })
+        }else{
+            setLoading(false)
+            router.replace('/(tabs)');
         }
-        setLoading(false)
+        
     }
-    // async function signUpWithEmail() {
-    //     setLoading(true)
-    //     const {
-    //         data: { session },
-    //         error,
-    //     } = await supabase.auth.signUp({
-    //         email: usuario,
-    //         password: senha,
-    //     })
-    //     if (error) Alert.alert(error.message)
-    //     if (!session) Alert.alert('Please check your inbox for email verification!')
-    //     setLoading(false)
-    // }
 
     return (
         <View style={styles.container}>
@@ -71,7 +48,7 @@ export default function Login() {
 
             <TextInput
                 style={styles.Input}
-                placeholder="Informe seu usuário"
+                placeholder="Informe o seu usuário"
                 value={usuario}
                 onChangeText={setUsuario}
             />
@@ -86,7 +63,7 @@ export default function Login() {
 
             <Toast />
 
-            <TouchableOpacity style={[styles.Button, loading && styles.buttonDisabled]} onPress={signInWithUsuario} disabled={loading}>
+            <TouchableOpacity style={styles.Button} onPress={validarLogin} disabled={loading}>
                 <Text style={styles.Text}>Entrar</Text>
             </TouchableOpacity>
         </View>
@@ -118,7 +95,4 @@ const styles = StyleSheet.create({
         backgroundColor: '#c2e015',
         alignItems: 'center',
     },
-    buttonDisabled: {
-        opacity: 0.5,
-      },
 })
