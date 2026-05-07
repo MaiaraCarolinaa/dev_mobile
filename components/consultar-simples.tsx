@@ -32,9 +32,10 @@ export default function CosultaAluno() {
       text1: 'Erro',
       text2: 'Erro ao alterar aluno'+ id,
     });
-       router.push('/(tabs)');
-  }''
+       router.push({pathname: '/(tabs)/cadastro', params:{id:id}});
+  }
   async function excluirAluno(id: number) {
+
     const { error } = await supabase
       .from('alunos')
       .delete().eq('id', id)
