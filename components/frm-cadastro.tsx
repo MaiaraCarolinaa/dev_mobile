@@ -9,6 +9,7 @@ import {
 import { useState } from 'react';
 //npm install react-native-toast-message
 import { supabase } from '@/lib/supabase';
+import React from 'react';
 import Toast from 'react-native-toast-message';
 
 export default function Cadastro() {
@@ -34,22 +35,23 @@ export default function Cadastro() {
             ])
         .select()
 
+        setLoading(false)
+        
         if(error){
-            setLoading(false)
+            //setLoading(false)
             Toast.show({
                 type: 'error',
                 text1: 'Erro!',
                 text2: error.message
             })
         }else{
-            setLoading(false)
             Toast.show({
                 type: 'success',
                 text1: 'Sucesso!',
                 text2: `Aluno ${data?.[0]?.nome} cadastrado com sucesso!`
             })
         }
-        
+    
     }
 
     return (
